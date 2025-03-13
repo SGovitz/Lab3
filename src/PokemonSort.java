@@ -6,7 +6,7 @@ import java.util.stream.*;
 public class PokemonSort {
 
     public static void main(String[] args) {
-        List<Pokemon> pokemonList = loadPokemonData("srcpokedex.csv");
+        List<Pokemon> pokemonList = loadPokemonData("C:\\Users\\smgbo\\IdeaProjects\\PeerReviews\\Lab3\\src\\pokedex.csv");
 
         if (pokemonList.isEmpty()) {
             System.out.println("No data loaded. Check the file path or format.");
@@ -24,8 +24,10 @@ public class PokemonSort {
 
     private static List<Pokemon> loadPokemonData(String filePath) {
         try (Stream<String> lines = Files.lines(Paths.get(filePath)).skip(1)) {
-            // Split on commas while respecting quoted fields
             return lines.map(line -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                    .map(fields -> Arrays.stream(fields)
+                            .map(field -> field.replaceAll("^\"|\"$", "")) // Trim outer quotes
+                            .toArray(String[]::new))
                     .map(Pokemon::new)
                     .collect(Collectors.toList());
         } catch (IOException e) {
