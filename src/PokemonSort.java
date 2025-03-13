@@ -6,7 +6,7 @@ import java.util.stream.*;
 public class PokemonSort {
 
     public static void main(String[] args) {
-        List<Pokemon> pokemonList = loadPokemonData("C:\\Users\\smgbo\\IdeaProjects\\PeerReviews\\Lab3\\src\\pokedex.csv");
+        List<Pokemon> pokemonList = loadPokemonData("src\\pokedex.csv");
 
         if (pokemonList.isEmpty()) {
             System.out.println("No data loaded. Check the file path or format.");
