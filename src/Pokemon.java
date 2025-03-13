@@ -1,4 +1,5 @@
 public class Pokemon {
+    private int pokedex;
     private String name;
     private String type;
     private String evoSet;
@@ -13,7 +14,8 @@ public class Pokemon {
 
     public Pokemon(String[] data) {
         // CSV order: id, name, height, weight, hp, attack, defense, s_attack, s_defense, speed, type, evo_set, info
-        // We ignore data[0] (id) and data[12] (info)
+        // We ignore data[12] (info)
+        this.pokedex = Integer.parseInt(data[0]);
         this.name = data[1].replace("\"", "");
         this.height = Integer.parseInt(data[2]);
         this.weight = Integer.parseInt(data[3]);
@@ -29,12 +31,12 @@ public class Pokemon {
 
     public Object[] toObjectArray() {
         return new Object[]{
-                name, height, weight, hp, attack, defense, sAttack, sDefense, speed, type, evoSet
+                pokedex, name, height, weight, hp, attack, defense, sAttack, sDefense, speed, type, evoSet
         };
     }
 
     @Override
     public String toString() {
-        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense;
+        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + type;
     }
 }

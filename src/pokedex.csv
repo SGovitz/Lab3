@@ -1,4 +1,4 @@
-"id","name","height","weight","hp","attack","defense","s_attack","s_defense","speed","type","evo_set","info"
+"pokedex","name","height","weight","hp","attack","defense","s_attack","s_defense","speed","type","evo_set","info"
 1,"bulbasaur","7","69","45","49","49","65","65","45","{grass,poison}",1,"A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON."
 2,"ivysaur","10","130","60","62","63","80","80","60","{grass,poison}",1,"When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
 3,"venusaur","20","1000","80","82","83","100","100","80","{grass,poison}",1,"The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."

@@ -27,6 +27,13 @@ public class PokemonSort {
             return lines.map(line -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                     .map(fields -> Arrays.stream(fields)
                             .map(field -> field.replaceAll("^\"|\"$", "")) // Trim outer quotes
+                            .map(field -> {
+                                // Check if the field is the "type" and remove curly braces
+                                if (field.contains("{") && field.contains("}")) {
+                                    return field.replaceAll("[{}]", "");
+                                }
+                                return field;
+                            })
                             .toArray(String[]::new))
                     .map(Pokemon::new)
                     .collect(Collectors.toList());
@@ -35,4 +42,5 @@ public class PokemonSort {
             return Collections.emptyList();
         }
     }
+
 }

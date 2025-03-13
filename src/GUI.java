@@ -7,11 +7,11 @@ public class GUI {
     public static void createAndShowGUI(List<Pokemon> pokemonList) {
         JFrame frame = new JFrame("Pokémon Data Visualization Tool");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1000, 600);
 
         // Define column names matching the CSV fields (excluding id and info)
         String[] columnNames = {
-                "Name", "Height", "Weight", "HP", "Attack",
+                "Pokedex #", "Name", "Height", "Weight", "HP", "Attack",
                 "Defense", "S. Attack", "S. Defense", "Speed", "Type", "Evo Set"
         };
 
