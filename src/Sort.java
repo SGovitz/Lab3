@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class Sort {
 
@@ -8,27 +9,42 @@ public class Sort {
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
 
-        // Add sorting for numeric columns (ascending/descending)
-        for (int i = 1; i < table.getColumnCount(); i++) {
-            final int colIndex = i;
-            table.getTableHeader().addMouseListener(new MouseAdapter() {
-                boolean ascending = true;
-
-                public void mouseClicked(MouseEvent e) {
-                    sorter.setComparator(colIndex, (o1, o2) -> {
-                        try {
-                            return ascending
-                                    ? Integer.compare(Integer.parseInt(o1.toString()), Integer.parseInt(o2.toString()))
-                                    : Integer.compare(Integer.parseInt(o2.toString()), Integer.parseInt(o1.toString()));
-                        } catch (NumberFormatException ex) {
-                            return o1.toString().compareToIgnoreCase(o2.toString());
-                        }
-                    });
-                    sorter.sort();
-                    ascending = !ascending; // Toggle sort direction
-                }
-            });
+        // Disable default header mouse listeners to avoid double-click issues.
+        JTableHeader header = table.getTableHeader();
+        for (MouseListener ml : header.getMouseListeners()) {
+            header.removeMouseListener(ml);
         }
+
+        header.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int viewColumn = table.columnAtPoint(e.getPoint());
+                if (viewColumn < 0) return;
+                int modelColumn = table.convertColumnIndexToModel(viewColumn);
+
+                // Determine new sort order for the clicked column.
+                List<RowSorter.SortKey> currentKeys = (List<RowSorter.SortKey>) sorter.getSortKeys();
+                SortOrder newOrder;
+                if (!currentKeys.isEmpty() && currentKeys.get(0).getColumn() == modelColumn) {
+                    newOrder = (currentKeys.get(0).getSortOrder() == SortOrder.ASCENDING)
+                            ? SortOrder.DESCENDING
+                            : SortOrder.ASCENDING;
+                } else {
+                    newOrder = SortOrder.ASCENDING; // Always start with ascending
+                }
+
+                // Build new sort keys list
+                List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+                sortKeys.add(new RowSorter.SortKey(modelColumn, newOrder));
+
+                // For columns other than Pokedex (# at model index 0), add a secondary sort key on Pokedex ascending.
+                if (modelColumn != 0) {
+                    sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+                }
+                sorter.setSortKeys(sortKeys);
+                sorter.sort();
+            }
+        });
     }
 
     public static void addTypeFilter(JTable table, JComboBox<String> typeFilterBox) {
@@ -43,7 +59,7 @@ public class Sort {
             if ("All".equals(selectedType)) {
                 finalSorter.setRowFilter(null); // Show all data
             } else {
-                finalSorter.setRowFilter(RowFilter.regexFilter("(?i)" + selectedType));
+                finalSorter.setRowFilter(RowFilter.regexFilter("(?i)" + selectedType, 10));
             }
         });
     }
