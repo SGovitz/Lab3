@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
@@ -18,11 +19,10 @@ public class PokemonSort {
         System.out.println("Tenth Pokemon: " + (pokemonList.size() >= 10 ? pokemonList.get(9) : "Less than 10 entries"));
         System.out.println("Total Entries: " + pokemonList.size());
 
-        // GUI Setup for Part Two
-        javax.swing.SwingUtilities.invokeLater(() -> GUI.createAndShowGUI(pokemonList));
+        SwingUtilities.invokeLater(() -> GUI.createAndShowGUI(pokemonList));
     }
 
-    private static List<Pokemon> loadPokemonData(String filePath) {
+    public static List<Pokemon> loadPokemonData(String filePath) {
         try (Stream<String> lines = Files.lines(Paths.get(filePath)).skip(1)) {
             return lines.map(line -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                     .map(fields -> Arrays.stream(fields)

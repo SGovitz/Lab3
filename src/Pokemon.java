@@ -1,8 +1,6 @@
 public class Pokemon {
     private int pokedex;
     private String name;
-    private String type;
-    private String evoSet;
     private int height;
     private int weight;
     private int hp;
@@ -11,9 +9,11 @@ public class Pokemon {
     private int sAttack;
     private int sDefense;
     private int speed;
+    private String type;
+    private int evo;
 
     public Pokemon(String[] data) {
-        // CSV order: id, name, height, weight, hp, attack, defense, s_attack, s_defense, speed, type, evo_set, info
+        // CSV order: pokedex, name, height, weight, hp, attack, defense, s_attack, s_defense, speed, type, evo_set, info
         // We ignore data[12] (info)
         this.pokedex = Integer.parseInt(data[0]);
         this.name = data[1].replace("\"", "");
@@ -25,17 +25,64 @@ public class Pokemon {
         this.sAttack = Integer.parseInt(data[7]);
         this.sDefense = Integer.parseInt(data[8]);
         this.speed = Integer.parseInt(data[9]);
-        this.type = data[10].replace("\"", "");
-        this.evoSet = data[11].replace("\"", "");
+        this.type = data[10].replaceAll("[{}]", "");
+        this.evo = Integer.parseInt(data[11]);
     }
 
     public Object[] toObjectArray() {
         return new Object[]{
-                pokedex, name, height, weight, hp, attack, defense, sAttack, sDefense, speed, type, evoSet
+                pokedex, name, height, weight, hp, attack, defense, sAttack, sDefense, speed, type, evo
         };
     }
 
-    @Override
+    public int getPokedex() {
+        return pokedex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public int getSAttack() {
+        return sAttack;
+    }
+
+    public int getSDefense() {
+        return sDefense;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getEvo() {
+        return evo;
+    }
+
     public String toString() {
         return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + type;
     }
