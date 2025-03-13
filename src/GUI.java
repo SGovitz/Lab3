@@ -19,15 +19,21 @@ public class GUI extends JFrame {
 
         // Add Type filter dropdown
         JComboBox<String> typeFilterBox = new JComboBox<>(getTypeOptions(pokemonList));
-        Sort.addTypeFilter(table, typeFilterBox);
+
+        // Create the new Mono/Dual filter combo box.
+        String[] monoDualOptions = {"N/A", "Mono-Type", "Dual-Type"};
+        JComboBox<String> monoDualFilterBox = new JComboBox<>(monoDualOptions);
 
         // Layout
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Filter by Type:"));
         controlPanel.add(typeFilterBox);
+        controlPanel.add(monoDualFilterBox);
 
         frame.add(controlPanel, BorderLayout.NORTH);
         frame.add(scrollPane, BorderLayout.CENTER);
+
+        Sort.addCombinedTypeFilter(table, typeFilterBox, monoDualFilterBox);
 
         frame.setVisible(true);
     }
