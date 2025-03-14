@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -35,7 +34,6 @@ public class GUI extends JFrame {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         Sort.addCombinedTypeFilter(table, typeFilterBox, monoDualFilterBox);
-
 
         table.getColumnModel().getColumn(10).setCellRenderer(new TypeColor());
         table.getColumnModel().getColumn(11).setCellRenderer(new TypeColor());

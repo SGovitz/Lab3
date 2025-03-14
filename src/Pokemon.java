@@ -84,6 +84,13 @@ public class Pokemon {
     }
 
     public String toString() {
-        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + type1 + ", " + type2;
+        String tempType;
+        if (type1.equals(type2)) {
+            tempType = type1;
+        }
+        else {
+            tempType = type1 + ", " + type2;
+        }
+        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + tempType;
     }
 }
