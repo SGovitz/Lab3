@@ -26,14 +26,7 @@ public class PokemonSort {
         try (Stream<String> lines = Files.lines(Paths.get(filePath)).skip(1)) {
             return lines.map(line -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                     .map(fields -> Arrays.stream(fields)
-                            .map(field -> field.replaceAll("^\"|\"$", "")) // Trim outer quotes
-                            .map(field -> {
-                                // Check if the field is the "type" and remove curly braces
-                                if (field.contains("{") && field.contains("}")) {
-                                    return field.replaceAll("[{}]", "");
-                                }
-                                return field;
-                            })
+                            .map(field -> field.replaceAll("^\"|\"$", ""))
                             .toArray(String[]::new))
                     .map(Pokemon::new)
                     .collect(Collectors.toList());

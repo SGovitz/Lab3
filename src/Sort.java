@@ -53,6 +53,7 @@ public class Sort {
             sorter = new TableRowSorter<>(table.getModel());
             table.setRowSorter(sorter);
         }
+
         final TableRowSorter<TableModel> finalSorter = sorter;
 
         ActionListener updateFilter = e -> {
@@ -63,26 +64,29 @@ public class Sort {
 
             // Filter by specific type (if not "All")
             if (!"All".equals(selectedType)) {
-                filters.add(RowFilter.regexFilter("(?i)" + selectedType, 10));
+                RowFilter<Object, Object> typeFilter = new RowFilter<>() {
+                    @Override
+                    public boolean include(Entry<? extends Object, ? extends Object> entry) {
+                        String type1 = entry.getStringValue(10); // Type 1 column index
+                        String type2 = entry.getStringValue(11); // Type 2 column index
+                        return type1.equalsIgnoreCase(selectedType) || type2.equalsIgnoreCase(selectedType);
+                    }
+                };
+                filters.add(typeFilter);
             }
 
-            // Custom filter for Mono-Type or Dual-Type.
+            // Filter by Mono-Type or Dual-Type
             if (!"N/A".equals(monoDualSelected)) {
                 RowFilter<Object, Object> monoDualFilter = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends Object, ? extends Object> entry) {
-                        String typeString = entry.getStringValue(10);
-                        String[] types = typeString.split(",");
-                        int count = 0;
-                        for (String s : types) {
-                            if (!s.trim().isEmpty()) {
-                                count++;
-                            }
-                        }
+                        String type1 = entry.getStringValue(10); // Type 1 column index
+                        String type2 = entry.getStringValue(11); // Type 2 column index
+
                         if ("Mono-Type".equals(monoDualSelected)) {
-                            return count == 1;
+                            return type1.equalsIgnoreCase(type2); // Same type in both columns
                         } else if ("Dual-Type".equals(monoDualSelected)) {
-                            return count == 2;
+                            return !type1.equalsIgnoreCase(type2); // Different types in both columns
                         }
                         return true;
                     }
@@ -90,6 +94,7 @@ public class Sort {
                 filters.add(monoDualFilter);
             }
 
+            // Apply combined filters
             if (filters.isEmpty()) {
                 finalSorter.setRowFilter(null);
             } else {

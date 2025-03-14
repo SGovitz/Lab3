@@ -4,7 +4,7 @@ import java.util.List;
 public class PokemonTable extends AbstractTableModel {
     private final String[] columnNames = {
             "Pokedex #", "Name", "Height", "Weight", "HP", "Attack", "Defense",
-            "S. Attack", "S. Defense", "Speed", "Type", "Evo Set"
+            "S. Attack", "S. Defense", "Speed", "Type 1", "Type 2", "Evo Set"
     };
 
     private final List<Pokemon> pokemonList;
@@ -27,9 +27,9 @@ public class PokemonTable extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
             // Columns: 0, 2, 3, 4, 5, 6, 7, 8, 9, and 11 are numeric.
-            case 0, 2, 3, 4, 5, 6, 7, 8, 9, 11 -> Integer.class;
+            case 0, 2, 3, 4, 5, 6, 7, 8, 9, 12 -> Integer.class;
             // Columns: 1 (Name) and 10 (Type) are Strings.
-            case 1, 10 -> String.class;
+            case 1, 10, 11-> String.class;
             default -> Object.class;
         };
     }
@@ -47,8 +47,9 @@ public class PokemonTable extends AbstractTableModel {
             case 7 -> p.getSAttack();
             case 8 -> p.getSDefense();
             case 9 -> p.getSpeed();
-            case 10 -> p.getType();
-            case 11 -> p.getEvo();
+            case 10 -> p.getType1();
+            case 11 -> p.getType2();
+            case 12 -> p.getEvo();
             default -> null;
         };
     }

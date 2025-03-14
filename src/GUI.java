@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -35,13 +36,17 @@ public class GUI extends JFrame {
 
         Sort.addCombinedTypeFilter(table, typeFilterBox, monoDualFilterBox);
 
+
+        table.getColumnModel().getColumn(10).setCellRenderer(new TypeColor());
+        table.getColumnModel().getColumn(11).setCellRenderer(new TypeColor());
+
         frame.setVisible(true);
+
     }
 
-    // Generate unique type options for filtering
     private static String[] getTypeOptions(List<Pokemon> pokemonList) {
         Set<String> types = pokemonList.stream()
-                .flatMap(pokemon -> Arrays.stream(pokemon.getType().split(",")))
+                .flatMap(pokemon -> Stream.of(pokemon.getType1(), pokemon.getType2()))
                 .map(String::trim)
                 .collect(Collectors.toSet());
 
@@ -50,4 +55,5 @@ public class GUI extends JFrame {
         typeList.add(0, "All"); // Add "All" option for no filter
         return typeList.toArray(new String[0]);
     }
+
 }

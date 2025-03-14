@@ -9,12 +9,11 @@ public class Pokemon {
     private int sAttack;
     private int sDefense;
     private int speed;
-    private String type;
+    private String type1;
+    private String type2;
     private int evo;
 
     public Pokemon(String[] data) {
-        // CSV order: pokedex, name, height, weight, hp, attack, defense, s_attack, s_defense, speed, type, evo_set, info
-        // We ignore data[12] (info)
         this.pokedex = Integer.parseInt(data[0]);
         this.name = data[1].replace("\"", "");
         this.height = Integer.parseInt(data[2]);
@@ -25,15 +24,14 @@ public class Pokemon {
         this.sAttack = Integer.parseInt(data[7]);
         this.sDefense = Integer.parseInt(data[8]);
         this.speed = Integer.parseInt(data[9]);
-        this.type = data[10].replaceAll("[{}]", "");
+
+        String[] types = data[10].replaceAll("[{}]", "").split(",");
+        this.type1 = types[0].trim();
+        this.type2 = (types.length > 1) ? types[1].trim() : types[0].trim();
+
         this.evo = Integer.parseInt(data[11]);
     }
 
-    public Object[] toObjectArray() {
-        return new Object[]{
-                pokedex, name, height, weight, hp, attack, defense, sAttack, sDefense, speed, type, evo
-        };
-    }
 
     public int getPokedex() {
         return pokedex;
@@ -75,15 +73,17 @@ public class Pokemon {
         return speed;
     }
 
-    public String getType() {
-        return type;
+    public String getType1() {
+        return type1;
     }
+
+    public String getType2() { return type2;}
 
     public int getEvo() {
         return evo;
     }
 
     public String toString() {
-        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + type;
+        return name + " - HP: " + hp + ", Attack: " + attack + ", Defense: " + defense + ", Speed: " + speed + ", Type: " + type1 + ", " + type2;
     }
 }
