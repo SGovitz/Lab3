@@ -6,6 +6,9 @@ import java.util.stream.*;
 
 public class GUI extends JFrame {
 
+    // This panel will hold the three sub-panels on the right.
+    private static JPanel rightPanel;
+
     public static void createAndShowGUI(List<Pokemon> pokemonList) {
         JFrame frame = new JFrame("Pokémon Data Visualization Tool");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,25 +39,20 @@ public class GUI extends JFrame {
         // Add the table (data view) in the center
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        // Create a container panel for the pie chart on the right
-        JPanel chartContainer = new JPanel(new BorderLayout());
-        // Initially display the first Pokémon's stat distribution pie chart
-        chartContainer.add(ChartPanel.createChartPanel(getStatsForPokemon(pokemonList.get(0)), pokemonList.get(0).getName()), BorderLayout.CENTER);
-        frame.add(chartContainer, BorderLayout.EAST);
+        // Create a container panel (rightPanel) for ChartPanel, StatsPanel, and DetailsPanel
+        rightPanel = new JPanel(new GridLayout(3, 1));
+        // Initially display the first Pokémon's data
+        updateRightPanel(pokemonList.get(0));
+        frame.add(rightPanel, BorderLayout.EAST);
 
-        // Add a selection listener to update the pie chart when a different Pokémon is clicked
+        // Add a selection listener to update the rightPanel when a different Pokémon is clicked
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Get the selected Pokémon from your list.
-                    // (Assumes the table rows match the order in pokemonList)
+                    // Assumes table row order matches the order in pokemonList.
                     Pokemon selectedPokemon = pokemonList.get(selectedRow);
-                    // Update the chart container with the new pie chart
-                    chartContainer.removeAll();
-                    chartContainer.add(ChartPanel.createChartPanel(getStatsForPokemon(selectedPokemon), selectedPokemon.getName()), BorderLayout.CENTER);
-                    chartContainer.revalidate();
-                    chartContainer.repaint();
+                    updateRightPanel(selectedPokemon);
                 }
             }
         });
@@ -72,6 +70,27 @@ public class GUI extends JFrame {
                 "Sp. Def", p.getSDefense(),
                 "Speed", p.getSpeed()
         );
+    }
+
+    // Updates the rightPanel with ChartPanel, StatsPanel, and DetailsPanel for the given Pokémon.
+    private static void updateRightPanel(Pokemon p) {
+        rightPanel.removeAll();
+
+        // Create a stats map from the Pokémon
+        Map<String, Integer> stats = getStatsForPokemon(p);
+
+        // Create each of the panels
+        JPanel chartPanel = ChartPanel.createChartPanel(stats, p.getName());
+        JPanel statsPanel = StatsPanel.createStatsPanel(stats, p.getName());
+        JPanel detailsPanel = DetailsPanel.createDetailsPanel(p.getDetail(), p.getName());
+
+        // Add panels to the rightPanel
+        rightPanel.add(chartPanel);
+        rightPanel.add(statsPanel);
+        rightPanel.add(detailsPanel);
+
+        rightPanel.revalidate();
+        rightPanel.repaint();
     }
 
     // Generate unique type options for filtering

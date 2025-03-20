@@ -12,6 +12,7 @@ public class Pokemon {
     private String type1;
     private String type2;
     private int evo;
+    private String detail;
 
     public Pokemon(String[] data) {
         this.pokedex = Integer.parseInt(data[0]);
@@ -30,6 +31,7 @@ public class Pokemon {
         this.type2 = (types.length > 1) ? types[1].trim() : types[0].trim();
 
         this.evo = Integer.parseInt(data[11]);
+        this.detail = data[12];
     }
 
 
@@ -81,6 +83,10 @@ public class Pokemon {
 
     public int getEvo() {
         return evo;
+    }
+
+    public String getDetail() {
+        return detail;
     }
 
     public String toString() {

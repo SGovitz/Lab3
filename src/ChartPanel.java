@@ -22,7 +22,7 @@ public class ChartPanel {
         JFreeChart pieChart = ChartFactory.createPieChart(
                 pokemonName + " Stat Distribution",
                 dataset,
-                true,  // Legend
+                false,  // Legend
                 true,  // Tooltips
                 false  // URLs
         );
