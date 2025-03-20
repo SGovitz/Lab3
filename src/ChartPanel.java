@@ -1,5 +1,7 @@
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import javax.swing.*;
 import java.util.Map;
@@ -26,6 +28,9 @@ public class ChartPanel {
                 true,
                 false
         );
+
+        PiePlot plot = (PiePlot) pieChart.getPlot();
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}"));
 
         return new org.jfree.chart.ChartPanel(pieChart);
     }

@@ -1,4 +1,8 @@
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -42,16 +46,31 @@ public class GUI extends JFrame {
         // Create a container panel (rightPanel) for ChartPanel, StatsPanel, and DetailsPanel
         rightPanel = new JPanel(new GridLayout(3, 1));
         // Initially display the first Pokémon's data
-        updateRightPanel(pokemonList.get(0));
+        if (!pokemonList.isEmpty()) {
+            updateRightPanel(pokemonList.get(0));
+        }
         frame.add(rightPanel, BorderLayout.EAST);
 
-        // Add a selection listener to update the rightPanel when a different Pokémon is clicked
+        // Selection Listener to update panels when a Pokémon is clicked
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Assumes table row order matches the order in pokemonList.
-                    Pokemon selectedPokemon = pokemonList.get(selectedRow);
+                    int modelRow = table.convertRowIndexToModel(selectedRow);
+                    Pokemon selectedPokemon = pokemonList.get(modelRow);
+                    updateRightPanel(selectedPokemon);
+                }
+            }
+        });
+
+        // Table Change Listener for sorting/filtering
+        table.getModel().addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE || e.getType() == TableModelEvent.INSERT) {
+                // Auto-select the first visible row after sorting or filtering
+                if (table.getRowCount() > 0) {
+                    table.setRowSelectionInterval(0, 0);
+                    int modelRow = table.convertRowIndexToModel(0);
+                    Pokemon selectedPokemon = pokemonList.get(modelRow);
                     updateRightPanel(selectedPokemon);
                 }
             }
@@ -106,3 +125,4 @@ public class GUI extends JFrame {
         return typeList.toArray(new String[0]);
     }
 }
+
