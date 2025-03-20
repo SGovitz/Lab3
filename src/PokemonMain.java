@@ -4,7 +4,7 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
-public class PokemonSort {
+public class PokemonMain {
 
     public static void main(String[] args) {
         List<Pokemon> pokemonList = loadPokemonData("src\\pokedex.csv");
