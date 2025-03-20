@@ -14,7 +14,6 @@ public class PokemonMain {
             return;
         }
 
-        // Console Output for Part One
         System.out.println("First Pokemon: " + pokemonList.get(0));
         System.out.println("Tenth Pokemon: " + (pokemonList.size() >= 10 ? pokemonList.get(9) : "Less than 10 entries"));
         System.out.println("Total Entries: " + pokemonList.size());

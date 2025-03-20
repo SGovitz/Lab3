@@ -22,9 +22,9 @@ public class ChartPanel {
         JFreeChart pieChart = ChartFactory.createPieChart(
                 pokemonName + " Stat Distribution",
                 dataset,
-                false,  // Legend
-                true,  // Tooltips
-                false  // URLs
+                false,
+                true,
+                false
         );
 
         return new org.jfree.chart.ChartPanel(pieChart);
